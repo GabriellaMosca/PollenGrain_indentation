@@ -1,0 +1,21 @@
+Info about the Pollen Grain Morphology 
+
+major axis: 128,5 +-9,9 (pressurized)
+minor axis: 98,3+-5,8   (pressurized)
+
+intine/exine thinkess ratio ~ 3 (on the colpus might be higher, 3x more). intine 1.6 um, exine 0.5 um
+
+Info about indentation on Pollen
+
+indenter radius: less than 1 um (data we have: tip diameter less than 2 um)
+indentation depth: various. about 0.9 um for exine and 1.9 um for intine. however, measurements were performed with a maximum force (10 uN) and not a maximum indentation depth.
+2:26
+what we detected:
+ratio of apparent stiffness between intine and exine: 0.56 +- 0.1.
+mean intine apparent stiffness is 9.3+-4.4 N/m
+mean exine apparent stiffness 16.5+-6.6 N/m
+however, both of them are not normally distributed. So using the value for intine and correlated to the exine through the ratio might be more applicable.
+
+Material properties starting guess: 
+Pressure 0.3 MPa? 
+Youngs modulus pollen tube (intine) 90 MPa
