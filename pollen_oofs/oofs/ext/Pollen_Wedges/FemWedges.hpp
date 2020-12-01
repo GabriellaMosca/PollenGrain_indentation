@@ -7,16 +7,71 @@
 namespace mdx
 {
 
+  class FemWedges;
+  class FemWedgesSetMaterial;
+  class FemWedgesSetPressure;
+  class FemWedgesSetDirichlet;
+  class FemWedgesSolver;
+
+  class FemWedgesIndentationSequence : public Process
+  {
+  public: 
+   FemWedgesIndentationSequence(const Process &proc) : Process(proc) 
+    {
+      setName("Model/CCF/00 Main Processes/1 Fem Wedges Indentation Sequence");
+      setDesc("Sequence of Fem Simulation of indentation");
+
+      addParm("Fem Wedges", "Name of Fem Wedges main process", "Model/CCF/00 Main Processes/2 Fem Wedges");
+      addParm("Fem Solver", "Name of the Solver process", "Model/CCF/01 Fem Solver");
+      addParm("Fem Indent", "Name of indentation process", "Model/CCF/12 Fem Indent");
+      addParm("Fem Set Pressure", "Name of the process that assigns pressure", "Model/CCF/08 Set Pressure");
+      addParm("Filename for pressure faces", "Name of the file containing the selected faces for pressure assignment", "FacesPressure.txt");
+      addParm("Fem Set Material", "Name of the process that assigns material properties", "Model/CCF/06 Material Properties");
+      addParm("Name of Set Dirichlet Process", "Name of the Process setting Dirichlet conditions", "Model/CCF/09 Set Dirichlet");
+      addParm("Filename for Dirichlet set", "Name of the file containing the selected nodes for Dirichlet conditions", "DirichletSet.txt");
+      addParm("Fem List Vertexes to Indent", "List of vertex indexes to indent", "13739");
+      addParm("Fem List of Pressure Values", "List of pressure values to assign to the template", "0.1, 0.2, 0.3, 0.4");
+      addParm("Fem List of Young moduli Eiso", "List of Young Moduli to be assigned to the isotropic plane", "50, 100, 200, 300");
+      addParm("Fem List of Young moduli Efiber", "List of Young Moduli to be assigned to the isotropic fiber plane (coupled in pair with Eiso)", "50, 100, 200, 300");
+    }
+    bool initialize(QWidget *parent);
+    bool step();
+
+  private:
+    FemWedges *femWedges = 0;
+    fem::IndentDirichlet *femIndent = 0;
+    FemWedgesSolver *FEMsolverProc = 0;
+    QStringList vertexesToIndentList;
+    QStringList pressureList;
+    QStringList eIsoList;
+    QStringList eFiberList;
+    int pointIndIterator = 0;
+    int pressureIterator = 0;
+    int materialIterator = 0;
+    FemWedgesSetMaterial *setMaterial = 0;
+    FemWedgesSetPressure *setPressure = 0;
+    MeshLoadSelection *loadSelection = 0;
+    MeshClearSelection *clearSelection = 0;
+    FemWedgesSetDirichlet *setDirichlet = 0;
+    MeshSave *saveMesh = 0;
+    MeshLoad *loadMesh = 0; 
+    Mesh *mesh = 0;
+    QString ccName;
+  };
+
+
  class FemWedges : public Process
   {
   public:
     FemWedges(const Process &proc) : Process(proc) 
     {
-      setName("Model/CCF/00 Fem Wedges");
-      setDesc("Fem Simulation of extensometer");
+      setName("Model/CCF/00 Main Processes/2 Fem Wedges");
+      setDesc("Fem Simulation of Indentation");
 
-      addParm("Fem Solver", "Name of Fem solver process", "Model/CCF/01 FEM Solver");
-      addParm("Fem Extend", "Name of the extensometer process", "Model/CCF/11 Fem Extend");
+      addParm("Fem Solver", "Name of Fem solver process", "Model/CCF/01 Fem Solver");
+      //addParm("Fem Extend", "Name of the extensometer process", "Model/CCF/11 Fem Extend");
+      addParm("Fem Indent", "Name of indentation process", "Model/CCF/12 Fem Indent");
+
     }
     bool initialize(QWidget *parent);
     bool step();
@@ -24,7 +79,12 @@ namespace mdx
 
   private:
     fem::FemSolver *femSolver = 0;
-    fem::ExtensometerDirichlet *femExtend = 0;
+    //fem::ExtensometerDirichlet *femExtend = 0;
+    fem::IndentDirichlet *femIndent = 0;
+    Mesh *mesh = 0;
+    QString ccName;
+
+
   };
 
   	
@@ -33,7 +93,7 @@ namespace mdx
   public:
     FemWedgesSolver(const Process &proc) : fem::FemSolver(proc) 
     {
-      setName("Model/CCF/01 FEM Solver");
+      setName("Model/CCF/01 Fem Solver");
       setDesc("FEM Simulation using wedge elements");
 
       // Update parameters with our own defaults
@@ -160,10 +220,25 @@ namespace mdx
       setName("Model/CCF/11 Fem Extend");
       setDesc("Fem Simulation of extension");
 
-      setParmDefault("Fem Solver", "Model/CCF/01 FEM Solver");
+      setParmDefault("Fem Solver", "Model/CCF/01 Fem Solver");
       setParmDefault("Dirichlet Derivs", "Model/CCF/10 Dirichlet Derivs");
     }
   };
+
+  class FemMembraneIndent : public fem::IndentDirichlet
+  {
+  public:
+    FemMembraneIndent(const Process &proc) : fem::IndentDirichlet(proc) 
+    {
+      setName("Model/CCF/12 Fem Indent");
+      setDesc("Fem Simulation of indentation");
+
+      setParmDefault("Fem Solver", "Model/CCF/01 Fem Solver");
+      setParmDefault("Dirichlet Derivs", "Model/CCF/10 Dirichlet Derivs");
+    }
+  };
+
+
    
   class FemWedgesVectorRender : public fem::VectorRender
   {

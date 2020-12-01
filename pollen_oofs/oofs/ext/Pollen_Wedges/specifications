@@ -12,6 +12,8 @@ PolleMembraneNormalMesh.mgxm
 PolleMembraneNormalMesh.mdxm
 PolleMembrane3DCellTissue.mgxm
 PolleMembrane.mdxm
+DirichletSet.txt
+FacesPressure.txt
 ignore:
 MorphoDynamX.py
 *.o
