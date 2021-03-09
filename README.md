@@ -24,4 +24,5 @@ decent double precision graphics card, such as an Geforce Titan or a Titan V. To
    - move to the directory where you have extracted the model package 
    - type make clean
    - type make run
+   
 This will already load the model in the GUI and it will be ready to run. Follow the video tutorial attached to this GIT repository to learn how to run and edit the model parameters.
