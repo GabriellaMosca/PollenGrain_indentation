@@ -1,6 +1,5 @@
 # PollenGrain_indentation
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4590379.svg
-   :target: https://doi.org/10.5281/zenodo.4590379
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4590379.svg)](https://doi.org/10.5281/zenodo.4590379)
 To use the model, either install the provided MorphoMechanX package (part of the MorphoDynamX modeling software, precompiled for Linux Mint 19 and Ubuntu 20) or require the software here: www.morphomechanx.org (the software has been tested to run against the commmit version ba3c1c73). NOTE: you will need Cuda installed (https://docs.nvidia.com/cuda/index.html).
 
 1) To install MorphoMechanX from package, download the one compatible with your distribution on your computer system. 
